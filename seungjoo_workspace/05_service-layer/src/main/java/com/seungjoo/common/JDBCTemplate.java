@@ -19,6 +19,7 @@ public class JDBCTemplate {
             conn = DriverManager.getConnection(prop.getProperty("url")
                     , prop.getProperty("user")
                     , prop.getProperty("password"));
+            conn.setAutoCommit(false); //오토 커밋 비활성화
 
         } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
@@ -61,4 +62,48 @@ public class JDBCTemplate {
             e.printStackTrace();
         }
     }
+    public static void commit(Connection conn){
+        try {
+            if(conn != null && !conn.isClosed()){
+                conn.commit();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void rollback(Connection conn){
+        try {
+            if(conn != null && !conn.isClosed()){
+                conn.rollback();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+

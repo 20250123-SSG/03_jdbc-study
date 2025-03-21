@@ -23,7 +23,11 @@
 
 
 </entry>
-
+<entry key="deleteMenu">
+    DELETE
+    FROM tbl_menu
+    WHERE menu_code = ?
+</entry>
 
 
 
