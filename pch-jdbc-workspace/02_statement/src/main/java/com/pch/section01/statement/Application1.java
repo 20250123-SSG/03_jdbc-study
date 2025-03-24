@@ -1,7 +1,5 @@
 package com.pch.section01.statement;
 
-import com.pch.common.JDBCTemplate;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,7 +36,7 @@ public class Application1 {
         ResultSet rset = null; // select문 실행 결과를 담는 객체
 
         // 결과 처리 로직
-        String query =  "SELECT emp_id, emp_name FROM employee";
+        String query =  "SELECT emp_id, emp_name, salary FROM employee where emp_id=200";
 
         try {
             stmt = conn.createStatement();
@@ -48,7 +46,8 @@ public class Application1 {
             while(rset.next()) {
                 int emp_id = rset.getInt("emp_id");
                 String emp_name = rset.getString("emp_name");
-                System.out.println(emp_id + " " + emp_name);
+                int salary = rset.getInt("salary");
+                System.out.println(emp_id + " " + emp_name+" "+salary);
             }
 
         } catch (SQLException e) {
