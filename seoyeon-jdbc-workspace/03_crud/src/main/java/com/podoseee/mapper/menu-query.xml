@@ -4,17 +4,36 @@
 
     <entry key="insertMenu">
         INSERT INTO
-            tbl_menu(
-                      menu_name
-                    , menu_price
-                    , category_code
-                    , orderable_status
-                    )
-        VALUES (
-                  ?
-                , ?
-                , ?
-                , ?
-                 )
+        tbl_menu
+        (
+        menu_name
+        , menu_price
+        , category_code
+        , orderable_status
+        )
+        VALUES
+        (
+        ?
+        , ?
+        , ?
+        , ?
+        )
     </entry>
+
+    <entry key="updateMenu">
+        UPDATE
+        tbl_menu
+        SET
+        menu_name = ?
+        , menu_price = ?
+        WHERE
+        menu_code = ?
+    </entry>
+
+    <entry key="deleteMenu">
+        DELETE
+        FROM tbl_menu
+        WHERE menu_code = ?
+    </entry>
+
 </properties>
