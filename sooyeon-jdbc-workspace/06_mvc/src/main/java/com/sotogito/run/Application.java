@@ -11,24 +11,9 @@ public class Application {
          *      - 재사용성 증가
          *      - 유지보수성 증가
          *      - 확장성
-         *
-         *
-         *
-         * ### VIEW
-         * - 입력
-         * - 출력
-         *
-         * ### CONTROLLER
-         * - 전달된 값 검증 및 가공
-         * - DTO에 담기
-         *
-         * ### SERIVCE
-         * - 비지니스 작업 순차적으로 수행
-         *
-         * ### DAO
-         * - DB에 접근
-         * - JDBC과정으로 SQL문 실행 및 결과 받기
          */
+
+        new MainView().mainMenuView();
     }
 
 }
