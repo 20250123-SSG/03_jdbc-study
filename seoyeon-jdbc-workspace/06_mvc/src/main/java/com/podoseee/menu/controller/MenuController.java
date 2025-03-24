@@ -5,6 +5,7 @@ import com.podoseee.menu.model.service.MenuService;
 import com.podoseee.menu.view.PrintResultView;
 
 import java.util.List;
+import java.util.Map;
 
 /*
     ## Controller ##
@@ -25,6 +26,26 @@ public class MenuController {
     public List<MenuDto> selectMenuList(){
         List<MenuDto> list = menuService.selectMenuList();
         return list;
+    }
+
+    public void registMenu(Map<String, String> requestParam){
+
+        // 요청시 전달값을 [가공처리한 후] DTO 담기
+        MenuDto menu = new MenuDto();
+        menu.setMenuName( requestParam.get("name") );
+        menu.setMenuPrice( Integer.parseInt(requestParam.get("price")) ); // 문자형을 숫자형으로 가공처리
+        menu.setCategory( requestParam.get("category") );
+        menu.setOrderableStatus( requestParam.get("orderable").toUpperCase() );
+
+        int result = menuService.registMenu(menu);
+
+        // 응답 화면(메세지 출력)을 지정해서 출력
+        if(result > 0){ // 성공
+            printResultView.displaySuccessMessage("insert");
+        }else{ // 실패
+            printResultView.displayFailMessage("insert");
+        }
+
     }
 
 }

@@ -4,6 +4,7 @@ import com.podoseee.menu.controller.MenuController;
 import com.podoseee.menu.model.dto.MenuDto;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 // 관리자 입장 - 메뉴 관리(목록조회,검색,등록,수정,삭제) 화면
@@ -64,7 +65,24 @@ public class MenuManageView {
 
     // 신규 메뉴 등록용 폼 서브 화면
     public void registMenuForm(){
+        System.out.println("\n---------- 신규 메뉴 등록 폼 -----------");
+        System.out.print("메뉴명: ");
+        String name = sc.nextLine();
+        System.out.print("메뉴가격: ");
+        String price = sc.nextLine();
+        System.out.print("카테고리번호: ");
+        String category = sc.nextLine();
+        System.out.print("판매내역에 등록(y/n): ");
+        String orderable = sc.nextLine();
 
+        // 요청시 전달할 값 Map에 담기
+        Map<String, String> requestParam = Map.of("name", name,
+                    "price", price,
+                    "category", category,
+                    "orderable", orderable);
+
+        // 등록 요청
+        menuController.registMenu(requestParam);
     }
 
     // 메뉴 정보 수정용 폼 서브 화면

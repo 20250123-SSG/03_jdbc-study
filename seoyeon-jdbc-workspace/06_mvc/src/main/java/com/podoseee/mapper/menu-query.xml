@@ -15,4 +15,50 @@
         menu_code DESC
     </entry>
 
+    <entry key = "insertMenu">
+        INSERT INTO
+        tbl_menu
+        (
+          menu_name
+        , menu_price
+        , category_code
+        , orderable_status
+        )
+        VALUES
+        (
+            ?
+          , ?
+          , ?
+          , ?
+        )
+    </entry>
+
+    <entry key = "selectAllCategory">
+        SELECT
+            category_code
+          , category_name
+          , ref_category_code
+        FROM
+            tbl_category
+    </entry>
+
+    <entry key = "updateMenu">
+        UPDATE
+            tbl_menu
+        SET
+            menu_name = ?
+          , menu_price = ?
+          , category_code = ?
+          , orderable_status = ?
+        WHERE
+            menu_code = ?
+    </entry>
+
+    <entry key = "deleteMenu">
+        DELETE
+        FROM tbl_menu
+        WHERE
+            menu_code = ?
+    </entry>
+
 </properties>

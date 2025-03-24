@@ -56,4 +56,27 @@ public class MenuDao {
         return list;
 
     }
+
+    public int insertMenu(Connection conn, MenuDto menu){
+        // insert문 => 처리된 행수(삽입된 행수)
+        int result = 0;
+        PreparedStatement pstmt = null;
+        String query = prop.getProperty("insertMenu");
+
+        try{
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, menu.getMenuName());
+            pstmt.setInt(2, menu.getMenuPrice());
+            pstmt.setInt(3, Integer.parseInt(menu.getCategory()));
+            pstmt.setString(4, menu.getOrderableStatus());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            close(pstmt);
+        }
+
+        return result;
+    }
 }

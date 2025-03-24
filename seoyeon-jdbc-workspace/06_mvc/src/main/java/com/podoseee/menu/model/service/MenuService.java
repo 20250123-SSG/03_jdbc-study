@@ -6,7 +6,7 @@ import com.podoseee.menu.model.dto.MenuDto;
 import java.sql.Connection;
 import java.util.List;
 
-import static com.podoseee.common.JDBCTemplate.getConnection;
+import static com.podoseee.common.JDBCTemplate.*;
 
 public class MenuService {
 
@@ -17,6 +17,18 @@ public class MenuService {
         List<MenuDto> list = menuDao.selectAllMenu(conn);
 
         return list;
+    }
+
+    public int registMenu(MenuDto menu){
+        Connection conn = getConnection();
+        int result = menuDao.insertMenu(conn, menu);
+        if(result > 0){
+            commit(conn);
+        }else{
+            rollback(conn);
+        }
+        close(conn);
+        return result;
     }
 
 }
