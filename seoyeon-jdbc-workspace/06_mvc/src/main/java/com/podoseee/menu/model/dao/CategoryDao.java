@@ -26,54 +26,55 @@ public class CategoryDao {
             e.printStackTrace();
         }
     }
-}
+    public List<CategoryDto> selectAllCategory(Connection conn){
+        List<CategoryDto> list = new ArrayList<>();
 
-public List<CategoryDto> selectAllCategory(Connection conn){
-    List<CategoryDto> list = new ArrayList<>();
-
-    PreparedStatement pstmt = null;
-    ResultSet rset = null;
-    String query = prop.getProperty("selectAllCategory");
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String query = prop.getProperty("selectAllCategory");
 
 
-    try{
-        pstmt = conn.prepareStatement(query);
-        rset = pstmt.executeQuery();
+        try{
+            pstmt = conn.prepareStatement(query);
+            rset = pstmt.executeQuery();
 
-        while(rset.next()){
-            list.add(new CategoryDto(
-                    rset.getInt("category_code"),
-                    rset.getString("category_name"),
-                    rset.getInt("ref_category_code")
-            ));
+            while(rset.next()){
+                list.add(new CategoryDto(
+                        rset.getInt("category_code"),
+                        rset.getString("category_name"),
+                        rset.getInt("ref_category_code")
+                ));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally{
+            close(rset);
+            close(pstmt);
         }
-    } catch (SQLException e){
-        e.printStackTrace();
-    } finally{
-        close(rset);
-        close(pstmt);
-    }
-    return list;
-}
-
-public int insertCategory(Connection conn, CategoryDto category) {
-
-    int result = 0;
-    PreparedStatement pstmt = null;
-    String query = prop.getProperty("insertCategory");
-
-    try{
-        pstmt = conn.prepareStatement(query);
-        pstmt.setInt(1, category.getCategoryCode());
-        pstmt.setString(2, category.getCategoryName());
-        pstmt.setInt(3, category.getRefCategoryCode());
-
-        result = pstmt.executeUpdate();
-    } catch (SQLException e){
-        e.printStackTrace();
-    } finally {
-        close(pstmt);
+        return list;
     }
 
-    return result;
+    public int insertCategory(Connection conn, CategoryDto category) {
+
+        int result = 0;
+        PreparedStatement pstmt = null;
+        String query = prop.getProperty("insertCategory");
+
+        try{
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, category.getCategoryCode());
+            pstmt.setString(2, category.getCategoryName());
+            pstmt.setInt(3, category.getRefCategoryCode());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
 }
+
+
