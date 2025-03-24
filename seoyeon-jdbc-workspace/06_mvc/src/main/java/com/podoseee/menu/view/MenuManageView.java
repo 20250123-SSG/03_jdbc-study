@@ -1,6 +1,7 @@
 package com.podoseee.menu.view;
 
 import com.podoseee.menu.controller.MenuController;
+import com.podoseee.menu.model.dto.CategoryDto;
 import com.podoseee.menu.model.dto.MenuDto;
 
 import java.util.List;
@@ -60,7 +61,12 @@ public class MenuManageView {
 
     // 전체 카테고리 목록 조회 서브 화면
     public void categoryListView(){
+        List<CategoryDto> list = categoryController.selectCategoryList();
 
+        System.out.println("\n---------- 조회 결과 -----------");
+        for(CategoryDto category : list){
+            System.out.println(category);
+        }
     }
 
     // 신규 메뉴 등록용 폼 서브 화면
