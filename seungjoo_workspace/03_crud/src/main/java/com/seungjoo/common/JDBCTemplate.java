@@ -1,5 +1,6 @@
 package com.seungjoo.common;
 
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.*;
@@ -11,31 +12,17 @@ public class JDBCTemplate {
         Properties prop = new Properties();
         Connection conn = null;
 
-        try (InputStream input = JDBCTemplate.class.getClassLoader().getResourceAsStream("connection-config.properties")) {
-            if (input == null) {
-                System.out.println("설정 파일을 찾을 수 없습니다.");
-                return null;
-            }
+        try {
+            prop.load(new FileReader("src/main/java/com/seungjoo/config/connection-config.properties"));
 
-            prop.load(input);
             Class.forName(prop.getProperty("driver"));
-            conn = DriverManager.getConnection(
-                    prop.getProperty("url"),
-                    prop.getProperty("user"),
-                    prop.getProperty("password")
-            );
+            conn = DriverManager.getConnection(prop.getProperty("url")
+                    , prop.getProperty("user")
+                    , prop.getProperty("password"));
 
-        } catch (IOException e) {
-            System.out.println("설정 파일 로드 중 오류 발생.");
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("JDBC 드라이버를 찾을 수 없습니다.");
-            e.printStackTrace();
-        } catch (SQLException e) {
-            System.out.println("데이터베이스 연결 실패.");
+        } catch (IOException | ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-
         return conn;
     }
 
