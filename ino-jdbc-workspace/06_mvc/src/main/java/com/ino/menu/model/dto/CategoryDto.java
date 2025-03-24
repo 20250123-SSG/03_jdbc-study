@@ -1,18 +1,25 @@
-package com.ino.model.dto;
+package com.ino.menu.model.dto;
 
-public class CategoryDTO {
+public class CategoryDto {
+
     private int categoryCode;
     private String categoryName;
+    private int refCategoryCode;
 
-    public CategoryDTO() {
+    public CategoryDto(){}
 
+    public CategoryDto(int categoryCode, String categoryName, int refCategoryCode) {
+        this.categoryCode = categoryCode;
+        this.categoryName = categoryName;
+        this.refCategoryCode = refCategoryCode;
     }
 
     @Override
     public String toString() {
-        return "CategoryDTO{" +
+        return "CategoryDto{" +
                 "categoryCode=" + categoryCode +
                 ", categoryName='" + categoryName + '\'' +
+                ", refCategoryCode=" + refCategoryCode +
                 '}';
     }
 
@@ -32,8 +39,11 @@ public class CategoryDTO {
         this.categoryName = categoryName;
     }
 
-    public CategoryDTO(int categoryCode, String categoryName) {
-        this.categoryCode = categoryCode;
-        this.categoryName = categoryName;
+    public int getRefCategoryCode() {
+        return refCategoryCode;
+    }
+
+    public void setRefCategoryCode(int refCategoryCode) {
+        this.refCategoryCode = refCategoryCode;
     }
 }

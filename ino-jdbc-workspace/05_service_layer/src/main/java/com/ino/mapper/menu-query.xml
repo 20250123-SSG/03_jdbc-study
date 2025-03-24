@@ -18,4 +18,20 @@
             , ?
             )
     </entry>
+    <entry key="insertCategory">
+        INSERT INTO
+              category_name
+            , ref_category_code
+            )
+        VALUES
+            (
+              ?
+            , ?
+            )
+    </entry>
+
+    <entry key="selectCurrentCategoryCode">
+        SELECT
+            LAST_INSERT_ID()
+    </entry>
 </properties>

@@ -9,13 +9,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
-import java.util.Scanner;
 
 import static com.ino.common.JDBCTemplate.close;
-import static com.ino.common.JDBCTemplate.getConnection;
 
 public class MenuDAO {
 
@@ -40,6 +36,43 @@ public class MenuDAO {
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return result;
+    }
+
+    public int selectCurrentCategoryCode(Connection conn) {
+        int currentCategoryCode = 0;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String query = prop.getProperty("selectCurrentCategoryCode");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            rset = pstmt.executeQuery();
+            if(rset.next()) {
+                currentCategoryCode = rset.getInt("LAST_INSERT_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+        return currentCategoryCode;
+    }
+
+    public int insertCategory(Connection conn, CategoryDTO category) {
+        PreparedStatement pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(prop.getProperty("insertMenu"));
+            pstmt.setString(1, category.getCategoryName());
+            pstmt.setInt(2, category.getCategoryCode());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
         }
         return result;
     }
