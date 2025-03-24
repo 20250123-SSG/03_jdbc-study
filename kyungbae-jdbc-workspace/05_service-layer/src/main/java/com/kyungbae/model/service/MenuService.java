@@ -28,4 +28,30 @@ public class MenuService {
         return result;
     }
 
+    public boolean registCategoryAndMenu2(CategoryDTO category, MenuDTO menu){
+        // 신규 카테고리 등록 후 등록시 생성된 카테고리번호로 메뉴 등록
+        boolean result = false;
+        Connection conn = getConnection();
+        MenuDAO menuDAO = new MenuDAO();
+
+        // 1. 신규 카테고리 등록
+        int categoryResult = menuDAO.insertCategory(conn, category);
+
+        // 2. 1번 과정으로 등록된 카테고리 번호 조회
+        int currentCategoryCode = menuDAO.selectCurrentCategoryCode(conn);
+
+        // 3. 신규 메뉴 등록
+        menu.setCategoryNo(currentCategoryCode);
+        int menuResult = menuDAO.insertMenu(conn, menu);
+
+        if (categoryResult > 0 && menuResult > 0) {
+            commit(conn);
+            result = true;
+        } else {
+            rollback(conn);
+        }
+
+        return result;
+    }
+
 }
