@@ -1,5 +1,6 @@
 package com.podoseee.menu.controller;
 
+import com.podoseee.menu.model.dto.CategoryDto;
 import com.podoseee.menu.model.dto.MenuDto;
 import com.podoseee.menu.model.service.MenuService;
 import com.podoseee.menu.view.PrintResultView;
@@ -18,6 +19,7 @@ import java.util.Map;
             - 응답 데이터만 돌려줄건지 (후에 REST방식의 개념)
             - 응답 화면을 출력시킬건지
  */
+
 public class MenuController {
 
     private MenuService menuService = new MenuService();
@@ -25,6 +27,12 @@ public class MenuController {
 
     public List<MenuDto> selectMenuList(){
         List<MenuDto> list = menuService.selectMenuList();
+        return list;
+    }
+
+    public List<CategoryDto> selectCategoryList() {
+        List<CategoryDto> list = menuService.selectCategoryList();
+
         return list;
     }
 
@@ -46,6 +54,22 @@ public class MenuController {
             printResultView.displayFailMessage("insert");
         }
 
+    }
+
+    public void modifyMenu(Map<String, String> requestParam){
+
+    }
+
+    public void removeMenu(Map<String, String> requestParam){
+        int menuCode = Integer.parseInt(requestParam.get("code"));
+
+        int result = menuService.removeMenu(menuCode);
+
+        if(result > 0){
+            printResultView.displaySuccessMessage("delete");
+        }else{
+            printResultView.displayFailMessage("delete");
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.podoseee.run;
 
 import com.podoseee.menu.view.MenuManageView;
+import com.podoseee.order.view.OrderView;
 
 import java.util.Scanner;
 
@@ -33,7 +34,7 @@ public class MainView {
 
             switch(num){
                 case 1: new MenuManageView().menuManageMainView(); break;
-                case 2: break;
+                case 2: new OrderView().orderMainView(); break;
                 case 0:
                     System.out.println("그동안 이용해주셔서 감사합니다."); return;
                 default:

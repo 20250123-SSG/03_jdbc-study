@@ -5,6 +5,7 @@ import com.podoseee.menu.model.dto.CategoryDto;
 import com.podoseee.menu.model.dto.MenuDto;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -61,11 +62,15 @@ public class MenuManageView {
 
     // 전체 카테고리 목록 조회 서브 화면
     public void categoryListView(){
-        List<CategoryDto> list = categoryController.selectCategoryList();
+        List<CategoryDto> list = menuController.selectCategoryList();
 
-        System.out.println("\n---------- 조회 결과 -----------");
-        for(CategoryDto category : list){
-            System.out.println(category);
+        if(list.isEmpty()){
+            System.out.println("조회된 카테고리가 없습니다.");
+        }else{
+            //list.forEach(category -> System.out.println(category));
+            list.forEach(System.out::println);
+            /*for(CategoryDto category : list){
+                System.out.println(category);*/
         }
     }
 
@@ -93,11 +98,35 @@ public class MenuManageView {
 
     // 메뉴 정보 수정용 폼 서브 화면
     public void modifyMenuForm(){
+        System.out.println("\n---------- 메뉴 수정 폼 -----------");
+        System.out.print("수정할 메뉴번호 : ");
+        String menuCode = sc.nextLine();
+        System.out.print("수정정보(메뉴명) : ");
+        String menuName = sc.nextLine();
+        System.out.print("수정정보(메뉴가격) : ");
+        String menuPrice = sc.nextLine();
+        System.out.print("수정정보(카테고리번호) : ");
+        String category = sc.nextLine();
+        System.out.print("수정정보(판매내역에 등록(y/n)) : ");
+        String orderable = sc.nextLine();
 
+        Map<String, String> requestParam = Map.of("code", menuCode,
+                "name", menuName,
+                "price", menuPrice,
+                "category", category,
+                "orderable", orderable);
+
+        menuController.modifyMenu(requestParam);
     }
 
     // 메뉴 정보 삭제용 폼 서브 화면
     public void removeMenuForm(){
+        System.out.println("\n---------- 메뉴 삭제 폼 -----------");
+        System.out.print("삭제할 메뉴번호 : ");
+        String menuCode = sc.nextLine();
 
+        Map<String, String> requestParam = Map.of("code", menuCode);
+
+        menuController.removeMenu(requestParam);
     }
 }
