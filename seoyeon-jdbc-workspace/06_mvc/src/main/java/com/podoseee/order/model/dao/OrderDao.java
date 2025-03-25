@@ -1,6 +1,8 @@
 package com.podoseee.order.model.dao;
 
 import com.podoseee.menu.model.dto.MenuDto;
+import com.podoseee.order.model.dto.OrderDto;
+import com.podoseee.order.model.dto.OrderMenuDto;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -60,6 +62,70 @@ public class OrderDao {
 
         return list;
 
+    }
+
+    public int insertOrder(Connection conn, OrderDto order){
+        // insert => 삽입된 행수 => int
+        int result = 0;
+
+        PreparedStatement pstmt = null;
+        String query = prop.getProperty("insertOrder");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, order.getTotalOrderPrice());
+
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+
+        return result;
+    }
+
+    public int selectCurrOrderCode(Connection conn){
+        // select문 => 한개의숫자조회 => ResultSet => int
+        int currOrderCode = 0;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String query = prop.getProperty("selectCurrOrderCode");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            rset = pstmt.executeQuery();
+
+            if(rset.next()){
+                currOrderCode = rset.getInt("curr_order_code");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+        return currOrderCode;
+    }
+
+    public int insertOrderMenu(Connection conn, OrderMenuDto orderMenu){
+        // insert => 삽입된 행수 => int
+        int result = 0;
+
+        PreparedStatement pstmt = null;
+        String query = prop.getProperty("insertOrderMenu");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, orderMenu.getOrderCode());
+            pstmt.setInt(2, orderMenu.getMenuCode());
+            pstmt.setInt(3, orderMenu.getOrderAmount());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            close(pstmt);
+        }
+        return result;
     }
 
 }

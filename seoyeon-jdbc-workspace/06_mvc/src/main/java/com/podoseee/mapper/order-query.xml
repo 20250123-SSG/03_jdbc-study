@@ -26,7 +26,28 @@
         VALUES
             (
             DATE_FORMAT( CURDATE(), '%y/%m/%d' )
-          , DATE_FORMAT( CURDATE(), '%H:%i:%s' )
+          , DATE_FORMAT( CURTIME(), '%H:%i:%s' )
+          , ?
+            )
+    </entry>
+
+    <entry key="selectCurrOrderCode">
+        SELECT
+            LAST_INSERT_ID() AS curr_order_code
+    </entry>
+
+    <entry key="insertOrderMenu">
+        INSERT INTO
+            tbl_order_menu
+            (
+            order_code
+          , menu_code
+          , order_amount
+            )
+        VALUES
+            (
+            ?
+          , ?
           , ?
             )
     </entry>

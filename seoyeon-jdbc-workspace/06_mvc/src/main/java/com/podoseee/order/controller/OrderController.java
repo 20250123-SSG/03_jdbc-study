@@ -30,6 +30,12 @@ public class OrderController {
         order.setTotalOrderPrice(totalPrice); // { totalOrderPrice:xxxx }
         order.setOrderMenuList(orderMenuList); // { totalOrderPrice:xxxx, orderMenuList<OrderMenuDto> 객체 }
 
-        orderService.registOrder(order);
+        int result = orderService.registOrder(order);
+
+        if(result > 0){
+            printResultView.displaySuccessMessage("order");
+        }else{
+            printResultView.displayFailMessage("order");
+        }
     }
 }
