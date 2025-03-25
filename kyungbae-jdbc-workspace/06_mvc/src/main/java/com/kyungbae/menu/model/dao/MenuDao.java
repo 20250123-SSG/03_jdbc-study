@@ -159,4 +159,24 @@ public class MenuDao {
         }
         return result;
     }
+
+    public int deleteMenu(Connection conn, int menuCode){
+        int result = 0;
+        PreparedStatement pstmt = null;
+
+        String query = prop.getProperty("deleteMenu");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, menuCode);
+            result = pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
 }

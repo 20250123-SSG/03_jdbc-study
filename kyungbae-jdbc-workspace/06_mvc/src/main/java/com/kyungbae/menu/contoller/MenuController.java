@@ -8,7 +8,7 @@ import com.kyungbae.menu.view.PrintResultView;
 import java.util.List;
 import java.util.Map;
 
-public class MenuContoller {
+public class MenuController {
 
     private MenuService ms = new MenuService();
     private PrintResultView printResultView = new PrintResultView();
@@ -64,4 +64,27 @@ public class MenuContoller {
             printResultView.displayFailMessage("update");
         }
     }
+
+    public void removeMenu(String menuCode){
+        int code = Integer.parseInt(menuCode);
+        int result = ms.deleteMenu(code);
+        if (result > 0) {
+            printResultView.displaySuccessMessage("delete");
+        } else {
+            printResultView.displayFailMessage("delete");
+        }
+    }
+
+    public int menuView(String menuCode) {
+        int result = 0;
+        MenuDto menu = ms.selectMenu(Integer.parseInt(menuCode));
+        if (menu.getMenuCode() != 0) {
+            printResultView.displayMenu(menu);
+            result = 1;
+        } else {
+            printResultView.displayFailMessage("selectMenu");
+        }
+        return result;
+    }
+
 }

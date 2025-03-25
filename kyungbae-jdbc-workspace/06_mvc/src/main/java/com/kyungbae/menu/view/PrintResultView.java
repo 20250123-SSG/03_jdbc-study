@@ -1,5 +1,8 @@
 package com.kyungbae.menu.view;
 
+
+import com.kyungbae.menu.model.dto.MenuDto;
+
 // 응답 결과를 출력하는 화면
 public class PrintResultView {
 
@@ -17,6 +20,12 @@ public class PrintResultView {
             case "insert" -> System.out.println("메뉴 등록 실패");
             case "update" -> System.out.println("메뉴 수정 실패");
             case "delete" -> System.out.println("메뉴 삭제 실패");
+            case "selectMenu" -> System.out.println("메뉴 조회 실패");
         }
     }
+
+    public void displayMenu(MenuDto menu) {
+        System.out.println(menu);
+    }
+
 }

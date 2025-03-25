@@ -1,6 +1,7 @@
 package com.kyungbae.run;
 
 import com.kyungbae.menu.view.MenuManageView;
+import com.kyungbae.order.view.OrderView;
 
 import java.util.Scanner;
 
@@ -22,7 +23,7 @@ public class MainView {
 
             switch (selectMainMenu) {
                 case 1: new MenuManageView().menuManageMainView(); break;
-                case 2: break;
+                case 2: new OrderView().orderMainView(); break;
                 case 0:
                     System.out.println("종료합니다."); return;
                 default:
