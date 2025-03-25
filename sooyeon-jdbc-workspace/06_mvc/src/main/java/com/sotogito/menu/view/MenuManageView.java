@@ -47,12 +47,20 @@ public class MenuManageView {
 
     private void menuListView() {
         System.out.println("전체 메뉴를 출력합니다.");
-        menuController.selectMenuList().forEach(System.out::println);
+        try {
+            menuController.selectMenuList().forEach(System.out::println);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void cateogryListView() {
         System.out.println("전체 카테고리 출력합니다.");
-        menuController.selectCategoryList().forEach(System.out::println);
+        try {
+            menuController.selectCategoryList().forEach(System.out::println);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     private void registMenuForm() {
@@ -103,7 +111,10 @@ public class MenuManageView {
         System.out.println("삭제할 메뉴 코드를 입력하세요.");
         String removeMenuCode = sc.nextLine();
 
-        menuController.deleteMenu(removeMenuCode);
+        Map<String, String> requestParam = Map.of(
+                "removeMenuCode",removeMenuCode
+        );
+        menuController.deleteMenu(requestParam);
     }
 
 }

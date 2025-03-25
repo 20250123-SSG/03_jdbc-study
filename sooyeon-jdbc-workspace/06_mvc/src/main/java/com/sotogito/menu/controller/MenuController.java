@@ -1,5 +1,6 @@
 package com.sotogito.menu.controller;
 
+import com.sotogito.menu.MenuFunction;
 import com.sotogito.menu.model.dto.CategoryDto;
 import com.sotogito.menu.model.dto.MenuDto;
 import com.sotogito.menu.model.service.MenuService;
@@ -46,9 +47,9 @@ public class MenuController {
 
         /// 응답화면을 지정해서 출력
         if (insertResult == 1) {
-            printResultView.displaySuccessMessage("insert");
+            printResultView.displaySuccessMessage(MenuFunction.INSERT);
         }else {
-            printResultView.displayFailMessage("insert");
+            printResultView.displayFailMessage(MenuFunction.INSERT);
         }
     }
 
@@ -64,21 +65,22 @@ public class MenuController {
         int updateResult = menuService.updateMenu(newMenu);
 
         if(updateResult == 1){
-            printResultView.displaySuccessMessage("update");
+            printResultView.displaySuccessMessage(MenuFunction.UPDATE);
         }else {
-            printResultView.displayFailMessage("update");
+            printResultView.displayFailMessage(MenuFunction.UPDATE);
         }
     }
 
-    public void deleteMenu(String menuCode){
-        int deleteResult = menuService.deleteMenu(Integer.parseInt(menuCode));
+    public void deleteMenu(Map<String, String> requestParam){
+        int removeMenuCode = Integer.parseInt(requestParam.get("removeMenuCode"));
+
+        int deleteResult = menuService.deleteMenu(removeMenuCode);
 
         if(deleteResult == 1){
-            printResultView.displaySuccessMessage("delete");
+            printResultView.displaySuccessMessage(MenuFunction.DELETE);
         }else {
-            printResultView.displayFailMessage("delete");
+            printResultView.displayFailMessage(MenuFunction.DELETE);
         }
-
     }
 
 }
