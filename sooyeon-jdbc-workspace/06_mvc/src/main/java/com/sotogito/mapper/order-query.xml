@@ -52,4 +52,15 @@
         )
     </entry>
 
+    <entry key="selectOrderMenu">
+        SELECT
+            order_code
+            ,menu_code
+            ,order_amount
+        FROM
+            tbl_order_menu
+        WHERE
+            order_code = ?
+    </entry>
+
 </properties>

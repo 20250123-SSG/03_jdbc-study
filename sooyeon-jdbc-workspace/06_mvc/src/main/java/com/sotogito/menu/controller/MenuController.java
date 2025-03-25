@@ -24,7 +24,6 @@ public class MenuController {
     private MenuService menuService = new MenuService();
     private PrintResultView printResultView = new PrintResultView();
 
-
     public List<MenuDto> selectMenuList() {
         return menuService.selectMenuList(); //결과를 반환? 아니면 view로? 는 컨트롤러 맘
     }
@@ -44,7 +43,6 @@ public class MenuController {
         menuDto.setOrderableStatus(requestParam.get("orderable").toUpperCase()); /// 대문자로 추가 가공
 
         int insertResult = menuService.registMenu(menuDto);
-
         /// 응답화면을 지정해서 출력
         if (insertResult == 1) {
             printResultView.displaySuccessMessage(MenuFunction.INSERT);

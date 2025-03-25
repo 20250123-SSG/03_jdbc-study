@@ -1,6 +1,7 @@
 package com.sotogito.run;
 
 import com.sotogito.menu.view.MenuManageView;
+import com.sotogito.order.view.OrderView;
 
 import java.util.Scanner;
 
@@ -34,14 +35,13 @@ public class MainView {
             int funcNum = Integer.parseInt(sc.nextLine());
 
             switch (funcNum) {
-                case 1: new MenuManageView().menuManageMainView(); break;
-                case 2: break;
+                case 1: new MenuManageView().menuManageMainView();   break;
+                case 2: new OrderView().orderMainView();             break;
                 case 0:
                     System.out.println("ㅃㅃ"); return;
                 default:
                     System.out.println("존재하지 않는 메뉴입니다.");
             }
-
         }
     }
 

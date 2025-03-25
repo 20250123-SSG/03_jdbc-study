@@ -2,6 +2,7 @@ package com.sotogito.menu.model.dao;
 
 import com.sotogito.menu.model.dto.CategoryDto;
 import com.sotogito.menu.model.dto.MenuDto;
+import com.sotogito.order.model.dto.OrderMenuDto;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Properties;
 
 import static com.sotogito.common.JDBCTemplate.close;
@@ -163,6 +165,70 @@ public class MenuDao {
         }
 
         return result;
+    }
+
+
+
+
+
+    public Optional<MenuDto> selectMenuByMenuCode(Connection conn, OrderMenuDto orderMenuDto) {
+        MenuDto result = null;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = prop.getProperty("selectMenuByMenuCode");
+
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1, orderMenuDto.getMenuCode());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                result = new MenuDto();
+
+                result.setMenuCode(rs.getInt("menu_code"));
+                result.setMenuName(rs.getString("menu_name"));
+                result.setMenuPrice(rs.getInt("menu_price"));
+                result.setCategory(rs.getString("category_name"));
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(ps);
+        }
+        return Optional.ofNullable(result);
+    }
+
+    public Optional<MenuDto> selectMenuByMenuName(Connection conn, MenuDto menuDto) {
+        MenuDto result = null;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = prop.getProperty("selectMenuByMenuName");
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setString(1, menuDto.getMenuName());
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                result = new MenuDto(
+                        rs.getInt("menu_code")
+                        , rs.getString("menu_name")
+                        , rs.getInt("menu_price")
+                        , rs.getString("category_name")
+                        , rs.getString("orderable_status")
+                );
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(ps);
+        }
+        return Optional.ofNullable(result);
     }
 
 }
