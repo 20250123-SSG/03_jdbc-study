@@ -174,6 +174,7 @@ public class OrderDao {
                 menu.setMenuName(rset.getString("menu_name"));
                 menu.setMenuPrice(rset.getInt("menu_price"));
                 menu.setCategory(rset.getString("category_name"));
+                menu.setOrderAmount(rset.getInt("order_amount"));
 
                 list.add(menu);
             }
@@ -184,5 +185,34 @@ public class OrderDao {
             close(pstmt);
         }
         return list;
+    }
+
+    public MenuDto selectMenuByName(Connection conn, String search) {
+        MenuDto menu = null;
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String query = prop.getProperty("selectMenuByName");
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, search);
+            rset = pstmt.executeQuery();
+
+            if (rset.next()) {
+                menu = new MenuDto();
+                menu.setMenuCode(rset.getInt("menu_code"));
+                menu.setMenuName(rset.getString("menu_name"));
+                menu.setMenuPrice(rset.getInt("menu_price"));
+                menu.setCategory(rset.getString("category_name"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+
+        return menu;
     }
 }

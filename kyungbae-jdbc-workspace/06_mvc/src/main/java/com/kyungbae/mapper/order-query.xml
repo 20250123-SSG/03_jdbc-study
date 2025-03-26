@@ -58,6 +58,8 @@
             , total_order_price
         FROM
             tbl_order
+        ORDER BY
+            order_code DESC
     </entry>
 
     <entry key="retrieveDetailOrder">
@@ -66,11 +68,26 @@
             , menu_name
             , menu_price
             , category_name
+            , order_amount
         FROM
             tbl_order_menu o
                 JOIN tbl_menu m ON m.menu_code = o.menu_code
-                JOIN tbl_category c ON c.category_code = m.category_code
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
         WHERE
             order_code = ?
+    </entry>
+
+    <entry key="selectMenuByName">
+        SELECT
+            menu_code
+            , menu_name
+            , menu_price
+            , category_name
+        FROM
+            tbl_menu m
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        WHERE
+        menu_name = ?
+        AND orderable_status = 'y'
     </entry>
 </properties>

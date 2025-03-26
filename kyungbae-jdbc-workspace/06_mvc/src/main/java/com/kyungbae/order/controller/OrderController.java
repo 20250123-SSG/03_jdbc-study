@@ -45,4 +45,14 @@ public class OrderController {
         List<MenuDto> list = orderService.retrieveOrderMenu(orderCode);
         return list;
     }
+
+    public void selectMenuByName(String search) {
+        MenuDto menu = orderService.selectMenuByName(search);
+
+        if (menu == null) { // 검색결과가 없을 경우
+            printResultView.displayFailMessage("search");
+        } else { // 검색결과가 있을 경우
+            printResultView.displaySearchResult(menu);
+        }
+    }
 }

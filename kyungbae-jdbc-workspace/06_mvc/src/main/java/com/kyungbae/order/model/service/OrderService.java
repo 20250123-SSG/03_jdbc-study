@@ -63,4 +63,12 @@ public class OrderService {
         close(conn);
         return list;
     }
+
+    public MenuDto selectMenuByName(String search) {
+        Connection conn = getConnection();
+        MenuDto menu = orderDao.selectMenuByName(conn, search);
+        close(conn);
+        return menu;
+    }
+
 }

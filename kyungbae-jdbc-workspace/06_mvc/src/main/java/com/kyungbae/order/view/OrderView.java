@@ -22,6 +22,7 @@ public class OrderView {
                 \n========= 손님 메뉴 =========
                 1. 주문하기
                 2. 주문내역 확인
+                3. 메뉴 검색
                 0. 이전화면으로 돌아가기.
                 >> 입력 :""";
 
@@ -33,12 +34,14 @@ public class OrderView {
             switch (num) {
                 case 1: orderForm(); break;
                 case 2: orderHistoryView(); break;
+                case 3: serchMenuForm(); break;
                 case 0: return;
                 default:
                     System.out.println("메뉴를 다시 선택해주세요");
             }
         }
     }
+
 
     // 주문 페이지
     private void orderForm() {
@@ -133,8 +136,17 @@ public class OrderView {
             System.out.println(menu.getMenuCode() +
                     " : " + menu.getMenuName() +
                     ", " + menu.getMenuPrice() + "원" +
-                    ", " + menu.getCategory());
+                    ", " + menu.getCategory() +
+                    ", " + menu.getOrderAmount() + "개");
         }
 
+    }
+
+    private void serchMenuForm() {
+        System.out.println("\n-------- 검색창 --------");
+        System.out.print("검색할 메뉴명: ");
+        String search = sc.nextLine();
+
+        orderController.selectMenuByName(search);
     }
 }

@@ -9,6 +9,7 @@ public class MenuDto {
     // 조회할 시 join하여 category의 이름을 담을 수 있도록 String 변수에 등록,
     // DML시 카테고리 번호 담을 예정
     private String orderableStatus;
+    private int orderAmount;
 
     public MenuDto(){}
 
@@ -18,6 +19,23 @@ public class MenuDto {
         this.menuPrice = menuPrice;
         this.category = category;
         this.orderableStatus = orderableStatus;
+    }
+
+    public MenuDto(int menuCode, String menuName, int menuPrice, String category, String orderableStatus, int orderAmount) {
+        this.menuCode = menuCode;
+        this.menuName = menuName;
+        this.menuPrice = menuPrice;
+        this.category = category;
+        this.orderableStatus = orderableStatus;
+        this.orderAmount = orderAmount;
+    }
+
+    public int getOrderAmount() {
+        return orderAmount;
+    }
+
+    public void setOrderAmount(int orderAmount) {
+        this.orderAmount = orderAmount;
     }
 
     public int getMenuCode() {
