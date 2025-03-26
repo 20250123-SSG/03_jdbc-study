@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding = "UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+    <entry key="insertmenu">
+        SELECT
+            menu_code
+          , menu_name
+          , menu_price
+          , category_code
+          , IF(orderable_status = 'Y', '주문가능', '주문불가') AS orderable_status
+        FROM
+            tbl_menu m
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        ORDER BY
+            menu_code DESC
+    </entry>
+
+    <entry key="insertMenu">
+        INSERT INTO
+            tbl_menu
+            (
+              menu_name
+            , menu_price
+            , category_code
+            , orderable_status
+            )
+        VALUES
+            (
+              ?
+            , ?
+            , ?
+            , ?
+            )
+    </entry>
+
+    <entry key="selectAllCategory">
+        SELECT
+            category_code
+          , category_name
+          , ref_category_code
+        FROM
+            tbl_category
+    </entry>
+
+    <entry key="updateMenu">
+        UPDATE
+            tbl_menu
+        SET
+            menu_name = ?
+          , menu_price = ?
+          , category_code = ?
+          , orderable_status = ?
+        WHERE
+            menu_code = ?
+    </entry>
+
+    <entry key="deleteMenu">
+        DELETE
+        FROM tbl_menu
+        WHERE
+            menu_code = ?
+    </entry>
+</properties>
