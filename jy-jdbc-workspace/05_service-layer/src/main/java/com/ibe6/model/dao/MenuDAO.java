@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -70,4 +71,32 @@ public class MenuDAO {
 
         return  result;
     }
+    public int selectCurrentCategoryCode(Connection conn){
+        // select문 => 조회결과 한행한열(하나의 숫자값) => ResultSet = > int
+        int currentCategoryCode = 0; // 최종결과 담을 변수
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        String query = prop.getProperty("selectCurrentCategoryCode");
+
+
+        try {
+            pstmt = conn.prepareStatement(query);
+            rset = pstmt.executeQuery();
+
+            if(rset.next()){
+                currentCategoryCode = rset.getInt("curr_category_code");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+            // 여기서 생성된 객체만 닫음
+        }
+
+        return currentCategoryCode;
+
+    }
+
 }

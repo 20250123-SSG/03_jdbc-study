@@ -10,6 +10,7 @@ package com.ibe6.model.service;
            2) 순차적으로 작업 실행
            3) 트랜잭션 처리가 필요할 경우 트랜잭션 처리
            4) Connection 반납
+        3. 사용자인터페이스(UI)와 데이터 베이스(Model) 사이의 계층
 
          * 비즈니스 로직 : 데이터베이스와 사용자인터페이스(UI)간의 정보 교환을 위한 규칙이나 알고리즘 의미
 
@@ -46,6 +47,33 @@ public class MenuService {
         close(conn);
 
         return result;
+    }
+
+    public int registCategoryAndMenu2(CategoryDTO category, MenuDTO menu){
+        // 신규 카테고리 등록 후 등록시 생성된 카테고리번호로 메뉴 등록
+
+        int result = 0; // 해당 작업들 전체의 성공여부를 판별할 변수 (최종결과)
+        MenuDAO menuDao = new MenuDAO();
+
+        Connection conn = getConnection();
+
+        // 1) 신규 카테고리 등록
+        int result1 = menuDao.insertCategory(conn, category);
+        // 2) 1번과정으로 등록된 카테고리번호를 조회
+        int currCategoryCode = menuDao.selectCurrentCategoryCode(conn);
+        menu.setCategoryCode(currCategoryCode);
+        // 3) 신규 메뉴 등록
+        int result2 = menuDao.insertMenu(conn, menu);
+
+        if(result1 > 0 && result2 > 0){
+            commit(conn);
+            result = 1;
+        }else{
+            rollback(conn);
+        }
+
+        return result;
+
     }
 
 }
