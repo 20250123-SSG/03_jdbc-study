@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+    <entry key="selectAllMenu">
+        select
+             A.menu_code
+            ,A.menu_name
+            ,A.menu_price
+            ,B.category_name
+            ,A.orderable_status
+            ,IF(A.orderable_status = 'Y', '주문가능','주문불가') AS orderable_status
+        from
+            tbl_menu A
+                left join tbl_category B on B.category_code = A.category_code
+    </entry>
+
+
+</properties>
