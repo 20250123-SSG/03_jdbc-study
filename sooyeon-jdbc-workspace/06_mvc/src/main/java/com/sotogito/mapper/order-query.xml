@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+    <entry key="selectMenuByCategory">
+        SELECT
+            menu_code
+            ,menu_name
+            ,menu_price
+        FROM
+            tbl_menu
+        WHERE
+            category_code = ?
+        AND orderable_status = "Y"
+    </entry>
+
+
+    <!-- 주문 테이블에 먼저 insert-->
+    <entry key="insertOrder">
+        INSERT INTO
+            tbl_order
+            (
+                order_date
+                ,order_time
+                ,total_order_price
+            )
+        VALUES
+        (
+            DATE_FORMAT(  CURDATE(), '%y/%m/%d' ) <!--쿼리에서 바로 추가-->
+            ,DATE_FORMAT( CURTIME(), '%H:%i:%s' )
+            ,?
+        )
+    </entry>
+
+    <entry key="selectCurrOrderCode">
+        SELECT
+            LAST_INSERT_ID() AS curr_order_code
+    </entry>
+
+
+    <entry key="selectAllOrder">
+        SELECT
+            order_code
+            ,order_date
+            ,order_time
+            ,total_order_price
+        FROM
+            tbl_order
+        ORDER BY
+            order_code DESC
+    </entry>
+
+
+    <entry key="insertOrderMenu">
+        INSERT INTO
+            tbl_order_menu
+            (
+                order_code
+                ,menu_code
+                ,order_amount
+            )
+        VALUES
+        (
+            ?
+            ,?
+            ,?
+        )
+    </entry>
+
+    <entry key="selectOrderMenu">
+        SELECT
+            order_code
+            ,menu_code
+            ,order_amount
+        FROM
+            tbl_order_menu
+        WHERE
+            order_code = ?
+    </entry>
+
+
+    <entry key="selectMenuByOrderCode">
+        SELECT
+            m.menu_code
+          , menu_name
+          , menu_price
+          , c.category_name
+          , IF(m.orderable_status = 'Y', '주문가능', '주문불가') AS orderable_status
+          , om.order_amount
+        FROM
+            tbl_order_menu om
+                JOIN tbl_menu m ON m.menu_code = om.menu_code
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code <!-- 만약 카테고리가 존재하지 않을 경우도 출력 처리-->
+        WHERE
+            order_code = ?
+    </entry>
+
+</properties>

@@ -70,5 +70,31 @@ public class MenuDAO {
         return insertResult;
     }
 
+    public int selectCurrentCategoryCode(Connection conn) {
+        ///  select 한 행
+        /// Statement -> Resultset -> int
+
+        int result = 0;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null; //값을 받아와야함
+
+        String query = prop.getProperty("selectCurrentCategoryCode");
+        try {
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                result = rs.getInt("curr_category_code"); //값을 넣는게 아니라 받아오는거임
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }finally {
+            close(ps);
+            close(rs);
+        }
+
+        return result;
+    }
 
 }
