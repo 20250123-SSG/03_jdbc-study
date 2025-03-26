@@ -38,4 +38,25 @@ public class OrderController {
             printResultView.displayFailMessage("order");
         }
     }
+
+    public List<OrderDto> selectOrderList(){
+        List<OrderDto> list = orderService.selectOrderList();
+        return list;
+    }
+
+    public List<OrderMenuDto> selectOrderDetail(String code){
+        int orderCode = Integer.parseInt(code);
+        List<OrderMenuDto> list = orderService.selectOrderDetail(orderCode);
+        return list;
+    }
+
+    public void selectMenuByName(String search){
+        MenuDto menu = orderService.selectMenuByName(search);
+
+        if(menu==null){ // 검색결과 없을 경우
+            printResultView.displayFailMessage("search");
+        }else{ // 검색결과 있을 경우
+            printResultView.displaySearchResult(menu);
+        }
+    }
 }

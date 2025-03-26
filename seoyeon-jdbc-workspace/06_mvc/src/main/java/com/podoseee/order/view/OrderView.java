@@ -23,6 +23,7 @@ public class OrderView {
                 \n====== 손님 메뉴 ======
                 1. 주문하기
                 2. 주문내역 확인하기
+                3. 메뉴 검색
                 0. 이전 화면으로 돌아가기
                 >> 입력:""";
 
@@ -34,6 +35,7 @@ public class OrderView {
             switch(num){
                 case 1: orderForm(); break;
                 case 2: orderHistoryView(); break;
+                case 3: searchMenuForm(); break;
                 case 0: return;
                 default:
                     System.out.println("메뉴를 다시 선택해주세요");
@@ -111,7 +113,7 @@ public class OrderView {
     public void orderHistoryView(){
 
         // 전체 주문 목록 조회해서 출력
-        List<OrderDto> orderList = orderController.registOrder();
+        List<OrderDto> orderList = orderController.selectOrderList();
         // 주문번호, 주문날짜, 주문시간, 주문가격
         System.out.println("\n-------- 주문 내역 ---------");
         for(OrderDto order : orderList){
@@ -119,34 +121,30 @@ public class OrderView {
                                " | 주문날짜: " + order.getOrderDate() +
                                " | 주문시간: " + order.getOrderTime() +
                                " | 주문가격: " + order.getTotalOrderPrice());
+            // System.out.println(order);
         }
 
         // 사용자에게 상세조회할 주문번호 입력받기
-        System.out.print("\n조회할 주문번호 입력: ");
+        System.out.print("\n상세조회할 주문번호 입력: ");
         String orderNum = sc.nextLine();
 
-        OrderDto selectedOrder = null;
-        for(OrderDto order : orderList){
-            if(order.getOrderCode().equals(orderNum)){
-                selectedOrder = order;
-                break;
-            }
-        }
-
         // 해당 주문에 어떤 메뉴들이 주문되었는지 조회해보기
-        // 메뉴번호, 메뉴명, 메뉴가격, 카테고리명
-        if(selectedOrder != null){
-            System.out.println("\n---선택한 주문 상세---");
-            System.out.println("주문번호: " + selectedOrder.getOrderCode());
-            System.out.println("주문날짜: " + selectedOrder.getOrderDate());
-            System.out.println("주문시간: " + selectedOrder.getOrderTime());
-            System.out.println("주문가격: " + selectedOrder.getTotalOrderPrice());
+        // 메뉴번호, 메뉴명, 메뉴가격, 카테고리명, 주문수량
+        List<OrderMenuDto> list = orderController.selectOrderDetail(orderCode);
+        for(OrderMenuDto orderMenu : list){ // orderMenu{orderAmont:주문수량, menu:MenuDto객체{메뉴번호,메뉴명,카테고리,가격}}
+            System.out.println(orderMenu.getMenu() + ", 주문수량: " + orderMenu.getOrderAmount() + "");
         }
-
     }
 
     // 3. 메뉴 검색
     //    검색할 메뉴명 입력받아서 해당 메뉴명과 일치하는 메뉴정보 조회
-    
+    public void searchMenuForm(){
+        System.out.println("\n---------- 검색창 -----------");
+        System.out.print("검색할 메뉴명: ");
+        String search = sc.nextLine();
+
+        orderController.selectMenuByName(search);
+    }
+
 
 }

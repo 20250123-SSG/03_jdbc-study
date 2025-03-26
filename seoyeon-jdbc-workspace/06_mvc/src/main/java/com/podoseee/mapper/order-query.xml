@@ -52,4 +52,46 @@
             )
     </entry>
 
+    <entry key="selectAllorder">
+        SELECT
+            order_code
+          , order_date
+          , order_time
+          , total_order_price
+        FROM
+            tbl_order
+        ORDER BY
+            order_code DESC
+    </entry>
+
+    <entry key = "selectOrderDetail">
+        SELECT
+            om.menu_code
+            , m.menu_name
+            , m.menu_price
+            , c.category_name
+            , om.order_amount
+        FROM
+            tbl_order_menu om
+            JOIN tbl_menu m ON m.menu_code = om.menu_code
+            LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        WHERE
+            order_code = ?
+    </entry>
+
+    <entry key = "selectMenuByName">
+        SELECT
+            menu_code
+          , menu_name
+          , menu_price
+          , category_name
+        FROM
+            tbl_menu m
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        WHERE
+            orderable_status = 'Y'
+        AND menu_name = ?
+    </entry>
+
+
 </properties>
