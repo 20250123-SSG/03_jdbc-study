@@ -20,20 +20,24 @@
         )
     </entry>
 
-    <entry key="updateMenu">
-        UPDATE
-        tbl_menu
-        SET
-        menu_name = ?
-        , menu_price = ?
-        WHERE
-        menu_code = ?
+    <entry key="insertCategory">
+        INSERT INTO
+        tbl_category
+        (
+        category_name
+        , ref_category_code
+        )
+        VALUES
+        (
+        ?
+        , ?
+        )
     </entry>
 
-    <entry key="deleteMenu">
-        DELETE
-        FROM tbl_menu
-        WHERE menu_code = ?
+    <entry key="selectCurrentCategoryCode">
+        SELECT
+            LAST_INSERT_ID() AS curr_category_code
     </entry>
+
 
 </properties>
