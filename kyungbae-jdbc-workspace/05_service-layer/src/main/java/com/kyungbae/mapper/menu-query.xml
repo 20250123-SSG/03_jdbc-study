@@ -34,4 +34,9 @@
             )
     </entry>
 
+    <entry key="selectCurrentCategoryCode">
+        SELECT
+            LAST_INSERT_ID() AS curr_category_code
+    </entry>
+
 </properties>

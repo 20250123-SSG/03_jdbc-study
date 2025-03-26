@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -88,5 +89,33 @@ public class MenuDAO {
         }
 
         return result;
+    }
+
+    /**
+     *  Connection 객체를 전달받아 해당 객체의
+     *  마지막 AutoIncrement 값을 반환하는 메소드
+     * @param conn  - 사용할 Connection 객체
+     * @return      - 최근에 생성된 CategoryCode
+     */
+    public int selectCurrentCategoryCode(Connection conn) {
+        PreparedStatement pstmt = null;
+        ResultSet rset = null;
+        int currentCategoryCode = 0;
+
+        String query = prop.getProperty("selectCurrentCategoryCode");
+        try {
+            pstmt = conn.prepareStatement(query);
+            rset = pstmt.executeQuery();
+            if(rset.next()){
+                currentCategoryCode = rset.getInt("curr_category_code");
+            } // 맵핑
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rset);
+            close(pstmt);
+        }
+
+        return currentCategoryCode;
     }
 }
