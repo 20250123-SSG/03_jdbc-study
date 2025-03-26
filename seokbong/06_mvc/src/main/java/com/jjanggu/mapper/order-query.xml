@@ -11,7 +11,7 @@
             tbl_menu
         WHERE
              orderable_status = 'Y'
-        AND category_code = ?;
+        AND category_code = ?
     </entry>
 
     <!-- 주문테이블에 insert -->
@@ -60,22 +60,36 @@
           , total_order_price
         FROM
             tbl_order
+        ORDER BY
+            order_code DESC
     </entry>
 
     <entry key="selectOrderDetails">
         SELECT
-            o.order_code
-          , m.menu_code
+            m.menu_code
+          , menu_name
+          , menu_price
+          , category_name
+          , om.order_amount
+        FROM
+           tbl_order_menu om
+                JOIN tbl_menu m ON m.menu_code = om.menu_code
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        WHERE
+            order_code = ?
+    </entry>
+
+    <entry key="selectMenuByName">
+        SELECT
+            menu_code
           , menu_name
           , menu_price
           , category_name
         FROM
-            tbl_order o
-                LEFT JOIN tbl_order_menu om ON o.order_code = om.order_code
-                LEFT JOIN tbl_menu m ON m.menu_code = om.menu_code
-                LEFT JOIN tbl_category c ON c.category_code = m.category_code
+        tbl_menu m
+            LEFT JOIN tbl_category c ON c.category_code = m.category_code
         WHERE
-            order_code = ?;
-
+            orderable_status = 'Y'
+        AND menu_name = ?
     </entry>
 </properties>
