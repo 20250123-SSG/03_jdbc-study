@@ -66,18 +66,42 @@ public class OrderService {
         return result;
     }
 
-    /**
-     * 1. orderCode와 일치하는 주문 정보 가져오기(메뉴 번호가 포함된) FROM tbl_order_menu                    -> OrderDao
-     * 2. List<OrderMenuDto>의 메뉴코드를 활용하여 tbl_menu에서 메뉴 코드와 일치하는 메뉴 데이터 가져오기     -> MenuDao
-     *
-     * @param order
-     * @return
-     */
-    public List<MenuDto> selectOrderMenuDetails(OrderDto order) {
-        List<MenuDto> result = new ArrayList<>();
-
+    public List<OrderDto> selectOrderList() {
         Connection conn = getConnection();
 
+        List<OrderDto> result = orderDao.selectAllOrder(conn);
+        if (result.isEmpty()) {
+            rollback(conn);
+            throw new IllegalArgumentException("주문 기록이 존재하지 않습니다");
+        }else {
+            commit(conn);
+        }
+
+        close(conn);
+        return result;
+    }
+
+    /**
+     * 1. 주문 번호와 메뉴 번호가 들어있는 테이블과 + 메뉴 번호와 메뉴 데이터를 가지고 있는 테이블을 조인한여 조회
+     *
+     */
+    public List<OrderMenuDto> selectOrderMenuDetails(OrderDto order) {
+        Connection conn = getConnection();
+
+        /// 주문테이블과 메뉴테이블을 join해서 주문 번호로 바로 메뉴를 가져온다.
+        List<OrderMenuDto> result = orderDao.selectMenuByOrderCode(conn, order.getOrderCode());
+        if (result.isEmpty()) {
+            rollback(conn);
+            throw new IllegalArgumentException("현재 존재하지 않는 메뉴입니다");
+        }else {
+            commit(conn);
+        }
+
+        close(conn);
+        return result;
+
+
+        /*
         /// 1. 주문 코드로 메뉴 번호가 담겨있는 데이터 가져오기 FROM tbl_order_menu
         List<OrderMenuDto> orderMenuList = orderDao.selectOrderMenu(conn, order);
         if (orderMenuList == null || orderMenuList.isEmpty()) {
@@ -100,23 +124,23 @@ public class OrderService {
             rollback(conn);
         }
 
-        close(conn);
-        return result;
+         */
     }
 
     public MenuDto selectMenuByMenuName(MenuDto menu) {
         Connection conn = getConnection();
 
-        Optional<MenuDto> result = menuDao.selectMenuByMenuName(conn, menu);
-        if (result.isEmpty()) {
-            rollback(conn);
-            throw new IllegalArgumentException("존재하지 않는 메뉴입니다.");
-        } else {
-            commit(conn);
-        }
+//        Optional<MenuDto> result = menuDao.selectMenuByMenuName(conn, menu.getMenuName());
+        MenuDto result = menuDao.selectMenuByMenuName(conn, menu.getMenuName());
+//        if (result.isEmpty()) {
+//            rollback(conn);
+//            throw new IllegalArgumentException("존재하지 않는 메뉴입니다.");
+//        } else {
+//            commit(conn);
+//        }
 
         close(conn);
-        return result.get();
+        return result;
     }
 
 }

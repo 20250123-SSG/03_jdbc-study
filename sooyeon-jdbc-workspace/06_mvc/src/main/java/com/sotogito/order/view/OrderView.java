@@ -31,7 +31,7 @@ public class OrderView {
             switch (menuFunc) {
                 case 1: orderForm();        break;
                 case 2: orderHistoryView(); break;
-                case 3: searchMenuView();   break;
+                case 3: searchMenuForm();   break;
                 case 0:
                     System.out.println("이전 페이지로 이동합니다.");
                     return;
@@ -115,35 +115,41 @@ public class OrderView {
      * 2. 해당 주문에 어떤 메뉴들이 주문되었는지 조회 - 매뉴 번호, 메뉴명, 메뉴 가격, 카테고리명
      */
     private void orderHistoryView() {
+        try {
+            orderController.selectOrderList().forEach(System.out::println);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return;
+        }
+
         System.out.println("조회할 주문 번호를 입력해주세요.");
         String orderCode = sc.nextLine();
 
-        List<MenuDto> orderMenuDetailList = null;
+        List<OrderMenuDto> orderMenuDetailList = null;
         try {
             orderMenuDetailList = orderController.selectOrderMenuDetailList(orderCode);
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
             return;
         }
-        orderMenuDetailList.forEach(System.out::println);
+
+        for(OrderMenuDto orderMenuDetail : orderMenuDetailList) {
+            MenuDto menuDetail = orderMenuDetail.getMenu();
+            int orderAmount = orderMenuDetail.getOrderAmount();
+
+            System.out.println(menuDetail + " - " + orderAmount+"개");
+        }
     }
 
     /**
      * // 3. 메뉴 검색
      * //    검색할 메뉴명 입력받아서 해당 메뉴명과 일치하는 메뉴정보 조회
      */
-    private void searchMenuView() {
+    private void searchMenuForm() {
         System.out.println("조회하고 싶은 메뉴명을 입력해주세요.");
         String menuName = sc.nextLine();
 
-        MenuDto menu = null;
-        try {
-            menu = orderController.selectMenuByMenuName(menuName);
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-        System.out.println(menu);
+        orderController.selectMenuByMenuName(menuName);
     }
 
 }

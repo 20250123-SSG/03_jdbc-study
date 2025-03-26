@@ -36,6 +36,20 @@
             LAST_INSERT_ID() AS curr_order_code
     </entry>
 
+
+    <entry key="selectAllOrder">
+        SELECT
+            order_code
+            ,order_date
+            ,order_time
+            ,total_order_price
+        FROM
+            tbl_order
+        ORDER BY
+            order_code DESC
+    </entry>
+
+
     <entry key="insertOrderMenu">
         INSERT INTO
             tbl_order_menu
@@ -59,6 +73,23 @@
             ,order_amount
         FROM
             tbl_order_menu
+        WHERE
+            order_code = ?
+    </entry>
+
+
+    <entry key="selectMenuByOrderCode">
+        SELECT
+            m.menu_code
+          , menu_name
+          , menu_price
+          , c.category_name
+          , IF(m.orderable_status = 'Y', '주문가능', '주문불가') AS orderable_status
+          , om.order_amount
+        FROM
+            tbl_order_menu om
+                JOIN tbl_menu m ON m.menu_code = om.menu_code
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code <!-- 만약 카테고리가 존재하지 않을 경우도 출력 처리-->
         WHERE
             order_code = ?
     </entry>

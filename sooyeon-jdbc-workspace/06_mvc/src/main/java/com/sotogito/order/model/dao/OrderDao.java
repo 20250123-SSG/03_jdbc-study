@@ -125,6 +125,7 @@ public class OrderDao {
     }
 
 
+    /*
     public List<OrderMenuDto> selectOrderMenu(Connection conn, OrderDto order) {
         List<OrderMenuDto> result = new ArrayList<>();
 
@@ -152,6 +153,72 @@ public class OrderDao {
         }
 
         return result;
+    }
+
+     */
+
+    public List<OrderMenuDto> selectMenuByOrderCode(Connection conn, int orderCode) {
+        List<OrderMenuDto> result = new ArrayList<>(); ///하나의 주문에 여러 메뉴 포함
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = prop.getProperty("selectMenuByOrderCode");
+        try {
+            ps = conn.prepareStatement(query);
+            ps.setInt(1,orderCode);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderMenuDto orderMenu = new OrderMenuDto();
+                orderMenu.setOrderAmount(rs.getInt("order_amount"));
+                orderMenu.setMenu(new MenuDto(
+                        rs.getInt("menu_code")
+                        , rs.getString("menu_name")
+                        , rs.getInt("menu_price")
+                        , rs.getString("category_name")
+                        , rs.getString("orderable_status")));
+
+                result.add(orderMenu);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(ps);
+        }
+
+        return result;
+    }
+
+    public List<OrderDto> selectAllOrder(Connection conn) {
+        List<OrderDto> reuslt = new ArrayList<>();
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = prop.getProperty("selectAllOrder");
+        try {
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                OrderDto order = new OrderDto();
+                order.setOrderCode(rs.getInt("order_code"));
+                order.setOrderDate(rs.getString("order_date"));
+                order.setOrderTime(rs.getString("order_time"));
+                order.setTotalOrderPrice(rs.getInt("total_order_price"));
+
+                reuslt.add(order);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } finally {
+            close(rs);
+            close(ps);
+        }
+
+        return reuslt;
     }
 
 //    public MenuDto selectOrderMenuDetails(Connection conn, OrderMenuDto orderMenuDto) {    >>>>>>>>>> MenuDao로 옮김

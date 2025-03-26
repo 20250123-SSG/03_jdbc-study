@@ -168,25 +168,20 @@ public class MenuDao {
     }
 
 
-
-
-
-    public Optional<MenuDto> selectMenuByMenuCode(Connection conn, OrderMenuDto orderMenuDto) {
+    public MenuDto selectMenuByMenuName(Connection conn, String menuName) {
         MenuDto result = null;
 
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = prop.getProperty("selectMenuByMenuCode");
-
+        String query = prop.getProperty("selectMenuByMenuName");
         try {
             ps = conn.prepareStatement(query);
-            ps.setInt(1, orderMenuDto.getMenuCode());
+            ps.setString(1, menuName);
             rs = ps.executeQuery();
 
             if (rs.next()) {
                 result = new MenuDto();
-
                 result.setMenuCode(rs.getInt("menu_code"));
                 result.setMenuName(rs.getString("menu_name"));
                 result.setMenuPrice(rs.getInt("menu_price"));
@@ -198,37 +193,6 @@ public class MenuDao {
             close(rs);
             close(ps);
         }
-        return Optional.ofNullable(result);
+        return result;
     }
-
-    public Optional<MenuDto> selectMenuByMenuName(Connection conn, MenuDto menuDto) {
-        MenuDto result = null;
-
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-
-        String query = prop.getProperty("selectMenuByMenuName");
-        try {
-            ps = conn.prepareStatement(query);
-            ps.setString(1, menuDto.getMenuName());
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                result = new MenuDto(
-                        rs.getInt("menu_code")
-                        , rs.getString("menu_name")
-                        , rs.getInt("menu_price")
-                        , rs.getString("category_name")
-                        , rs.getString("orderable_status")
-                );
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } finally {
-            close(rs);
-            close(ps);
-        }
-        return Optional.ofNullable(result);
-    }
-
 }

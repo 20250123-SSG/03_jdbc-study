@@ -20,18 +20,28 @@ public class OrderController {
         return orderService.selectOrderableMenuList(categoryCode);
     }
 
-    public List<MenuDto> selectOrderMenuDetailList(String orderCode) {
+    public List<OrderMenuDto> selectOrderMenuDetailList(String orderCode) {
         OrderDto order = new OrderDto();
         order.setOrderCode(Integer.parseInt(orderCode));
 
         return orderService.selectOrderMenuDetails(order);
     }
 
-    public MenuDto selectMenuByMenuName(String menuName) {
+    public List<OrderDto> selectOrderList(){
+        return orderService.selectOrderList();
+    }
+
+    public void selectMenuByMenuName(String menuName) {
         MenuDto menuDto = new MenuDto();
         menuDto.setMenuName(menuName);
 
-        return orderService.selectMenuByMenuName(menuDto);
+        MenuDto result = orderService.selectMenuByMenuName(menuDto);
+
+        if(result == null){
+            printResultView.displayFailMessage(OrderFunction.SEARCH);
+        }else {
+            printResultView.displaySearchResult(result);
+        }
     }
 
     public void registOrder(Map<String, Object> requestParams) {

@@ -88,12 +88,12 @@
             ,menu_name
             ,menu_price
             ,category_name
-            ,IF(orderable_status = 'Y', '주문가능', '주문불가') AS orderable_status
         FROM
             tbl_menu m
-                JOIN tbl_category c ON c.category_code = m.category_code
+                LEFT JOIN tbl_category c ON c.category_code = m.category_code
         WHERE
              menu_name  = ?
+        AND  orderable_status = 'Y'
     </entry>
 
 </properties>
