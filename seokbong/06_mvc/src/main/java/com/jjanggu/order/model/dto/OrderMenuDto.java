@@ -1,10 +1,16 @@
 package com.jjanggu.order.model.dto;
 
+import com.jjanggu.menu.model.dto.MenuDto;
+
+
 public class OrderMenuDto {
 
     private int orderCode;
     private int menuCode;
     private int orderAmount;
+
+    // has-a 관계
+    private MenuDto menu;
 
     public OrderMenuDto(){}
 
@@ -36,6 +42,14 @@ public class OrderMenuDto {
 
     public void setOrderAmount(int orderAmount) {
         this.orderAmount = orderAmount;
+    }
+
+    public MenuDto getMenu() {
+        return menu;
+    }
+
+    public void setMenu(MenuDto menu) {
+        this.menu = menu;
     }
 
     @Override

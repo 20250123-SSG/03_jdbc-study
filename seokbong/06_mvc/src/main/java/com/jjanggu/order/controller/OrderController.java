@@ -46,10 +46,20 @@ public class OrderController {
         return list;
     }
 
-    public List<OrderDto> selectOrderDetails (String orderNum){
-        int orderCode = Integer.parseInt(orderNum);
-        List<OrderDto> list = orderService.selectOrderDetails(orderCode);
+    public List<OrderMenuDto> selectOrderDetails (String Code){
+        int orderCode = Integer.parseInt(Code);
+        List<OrderMenuDto> list = orderService.selectOrderDetails(orderCode);
         return list;
+    }
+
+    public void selectMenuByName(String search){
+        MenuDto menu = orderService.selectMenuByName(search);
+
+        if(menu == null){ // 검색결과가 없을 경우
+            printResultView.displayFailMessage("search");
+        }else{ // 검색결과 있을 경우
+            printResultView.displaySearchResult(menu);
+        }
     }
 
 }
